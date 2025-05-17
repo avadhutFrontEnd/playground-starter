@@ -20,3 +20,10 @@ This repository belongs to part 2 of my React course covering intermediate-level
 - Routing with React Router 
 
 You can find the course at https://codewithmosh.com
+
+# Commit message format : 
+[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #3-Setting-Up-React-Query_mp4_1min_23sec ] - Install React Query.
+
+
+# my-github Account : 
+https://github.com/avadhutFrontEnd/playground-starter
