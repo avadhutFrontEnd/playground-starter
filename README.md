@@ -22,7 +22,7 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #4-Fetching-Data_map4 ] - To fetch data with React Query, we use the "query" hook that is defined in `@tanstack/react-query`. 
+[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #5-Handling-Errors_mp4_2min_26sec ] - Handling Errors with React Query, we use the "query" hook that is defined in `@tanstack/react-query`. 
 
 
 # my-github Account : 
