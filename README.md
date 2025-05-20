@@ -22,7 +22,7 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #7-Creating-a-Custom-Query-Hook_mp4_2min_32sec ] - create 'separation of concerns' using Custom-Query-Hook.
+[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #8-Using-React-Query-DevTools_mp4_3min_08sec ] - "React Query" comes with its own DevTool. It's a powerful tool for debugging and monitoring our queries. 
 
 
 # my-github Account : 
