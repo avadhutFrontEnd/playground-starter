@@ -10,20 +10,25 @@ interface Post {
   userId: number;
 }
 
-const usePosts = (userId: number | undefined) =>
+interface PostQuery {
+  page: number;
+  pageSize: number;
+}
+
+const usePosts = (query: PostQuery) =>
   useQuery<Post[], Error>({
-    queryKey: userId ? ['users', userId, 'posts'] : ['posts'], // <--- This is the same pattern we follow when designing URLs for our APIs. E.g "/users/1/posts" ---> as we go from left to right, the data gets more specific.
-    // "userId" is a parameter for this query.
-    // Every time the value of "userId" changes, React query will fetch the posts for that user from the backend. So this is very similar to the dependency array of the "effect" hook. ---> anytime the "userId" changes, our query will get re-executed.
+    queryKey: ["posts", query],
     queryFn: () =>
       axios
         .get("https://jsonplaceholder.typicode.com/posts", {
           params: {
-            userId
-          }
+            _start: (query.page - 1) * query.pageSize,
+            _limit: query.pageSize,
+          },
         })
         .then((res) => res.data),
     staleTime: 1 * 60 * 1000, //1m
+    keepPreviousData: true,
   });
 
 export default usePosts;

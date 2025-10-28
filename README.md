@@ -22,7 +22,7 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #11-Parameterized-Queries_mp4_6min_18sec ] - Implement post filtering by 'userId' using parameterized React Query.
+[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #12-Paginated-Queries_mp4_5min_37sec ] - Implement pagination using a 'query' object and 'keepPreviousData'. 
 
 
 # my-github Account : 
