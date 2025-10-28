@@ -22,7 +22,7 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #9-Customizing-Query-Settings_mp4_5min_18sec ] - Queries have a few "default settings" that work in most situations, but we can always customize them "per query" or "globally".
+[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #10-Exercise-Fetching-Data_mp4_3min_31sec ] - Refactor 'PostList.tsx' to use custom 'usePosts.ts' hook with React Query.
 
 
 # my-github Account : 
