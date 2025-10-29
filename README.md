@@ -22,7 +22,12 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #12-Paginated-Queries_mp4_5min_37sec ] - Implement pagination using a 'query' object and 'keepPreviousData'. 
+[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #15-Mutating-Data_mp4_9min_40sec ] - feat(todos): Add new todo via useMutation and update cache
+Implements data mutation logic for creating a new todo item.
+- Integrated TodoForm component into App.tsx.
+- Utilized useMutation to send POST requests via Axios.
+- Used the onSuccess callback to update the UI.
+- Chose the manual cache update approach (queryClient.setQueryData) to efficiently update the todo list after a successful creation, avoiding unnecessary API calls. 
 
 
 # my-github Account : 
