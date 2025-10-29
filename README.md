@@ -22,7 +22,15 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #17-Showing-Mutation-Progress_mp4_1min_27sec ] - Feat: Add loading state and clear form on successful todo creation.
+[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #18-Optimistic-Updates_mp4_7min_48sec ] - feat: Implement optimistic updates for adding a new Todo
+
+Enhances user experience by optimistically updating the UI immediately upon adding a new Todo using `onMutate` to set the query cache.
+
+This commit includes:
+- Adding `onMutate` to perform an instant UI update and capture the previous state (`previousTodos`) in a returned context object.
+- Defining a generic type for the mutation context (`AddTodoContext`) to properly type the context object.
+- Handling the success scenario in `onSuccess` by replacing the optimistic Todo with the actual data (including ID) returned from the backend.
+- Implementing error handling in `onError` to roll back the optimistic change by restoring the previous Todo list from the context.
 
 
 # my-github Account : 
