@@ -22,7 +22,7 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #16-Handling-Mutation-Errors_mp4_2min_14sec ] - Feat: Add error handling for 'addTodo' mutation using React Query.
+[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #17-Showing-Mutation-Progress_mp4_1min_27sec ] - Feat: Add loading state and clear form on successful todo creation.
 
 
 # my-github Account : 
