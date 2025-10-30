@@ -22,15 +22,25 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #19-Creating-a-Custom-Mutation-Hook_mp4_7min_04sec ] - refactor: Extract todo creation logic into a custom mutation hook (useAddTodo)
+[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #20-Creating-a-Reusable-API-Client_mp4_10min_00sec ] - feat: Create reusable, generic 'APIClient' to centralize data fetching logic
 
-This refactoring separates the data management logic from the UI layer, adhering to the **Separation of Concerns** principle.
+## feat: Create reusable, generic APIClient to centralize data fetching logic
 
-Key changes:
-- Created **`useAddTodo.ts`** to encapsulate the `useMutation` hook, including the full optimistic update logic (`onMutate`, `onSuccess`, `onError`).
-- The UI-specific logic (clearing the input field) was decoupled from the hook and is now passed in as an `onAdd` callback from `TodoForm.tsx`.
-- Extracted the duplicated cache key `['todos']` into a shared constant file (`constants.ts`) as **`CACHE_KEY_TODOS`** to improve maintainability and prevent typos.
-- **`TodoForm.tsx`** is significantly simplified, now focusing solely on rendering and managing local UI state.
+**Refactor:**
+
+* Extracted redundant Axios/fetching logic from `useTodos` and `useAddTodo` into a new **generic `APIClient<T>` class** in `services/apiClient.ts`.
+* The `APIClient` uses a shared **`axiosInstance`** with a configured `baseURL` to prevent URL duplication.
+* Implemented **`getAll`** and **`post`** methods as **arrow functions** to correctly preserve the `this` context for class properties like `this.endpoint`.
+* Updated `useTodos` to use **`queryFn: apiClient.getAll`**.
+* Updated `useAddTodo` to use **`mutationFn: apiClient.post`**.
+
+**Fix:**
+
+* Used **arrow function syntax** for class methods in `APIClient` to resolve the `this` context bug (where `this.endpoint` was `undefined` when methods were passed as callbacks).
+
+**Chore:**
+
+* Removed redundant loading state logic from **`TodoForm.tsx`** button as optimistic updates make it visually unnecessary.
 
 
 # my-github Account : 
