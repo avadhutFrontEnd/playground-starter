@@ -22,15 +22,15 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #18-Optimistic-Updates_mp4_7min_48sec ] - feat: Implement optimistic updates for adding a new Todo
+[Course: 2. React 18 for Intermediate Topics > 2. Fetching and Updating Data with React Query (3h) ] [ Video: #19-Creating-a-Custom-Mutation-Hook_mp4_7min_04sec ] - refactor: Extract todo creation logic into a custom mutation hook (useAddTodo)
 
-Enhances user experience by optimistically updating the UI immediately upon adding a new Todo using `onMutate` to set the query cache.
+This refactoring separates the data management logic from the UI layer, adhering to the **Separation of Concerns** principle.
 
-This commit includes:
-- Adding `onMutate` to perform an instant UI update and capture the previous state (`previousTodos`) in a returned context object.
-- Defining a generic type for the mutation context (`AddTodoContext`) to properly type the context object.
-- Handling the success scenario in `onSuccess` by replacing the optimistic Todo with the actual data (including ID) returned from the backend.
-- Implementing error handling in `onError` to roll back the optimistic change by restoring the previous Todo list from the context.
+Key changes:
+- Created **`useAddTodo.ts`** to encapsulate the `useMutation` hook, including the full optimistic update logic (`onMutate`, `onSuccess`, `onError`).
+- The UI-specific logic (clearing the input field) was decoupled from the hook and is now passed in as an `onAdd` callback from `TodoForm.tsx`.
+- Extracted the duplicated cache key `['todos']` into a shared constant file (`constants.ts`) as **`CACHE_KEY_TODOS`** to improve maintainability and prevent typos.
+- **`TodoForm.tsx`** is significantly simplified, now focusing solely on rendering and managing local UI state.
 
 
 # my-github Account : 
