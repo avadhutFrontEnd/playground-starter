@@ -22,24 +22,25 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #2-Consolidating-State-Logic-with-a-Reducer_mp4_7min_12sec ] - Feature: Implement useReducer for Counter
+[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #3-Creating-Complex-Actions_mp4_6min_46sec ] - Feature: Implement useReducer for TaskList with complex actions
 
-## Introduced the concept of Reducers using the `Counter` component and `useReducer` hook.
+## Refactor TaskList state logic using `useReducer` and discriminated union types for complex actions
 
-Refactored the local state management of the `Counter` component from `useState` to `useReducer` to centralize and encapsulate state update logic, leading to better separation of concerns.
+Applied the `useReducer` hook to the `TaskList` component to centralize the state management logic (adding and deleting tasks). This exercise demonstrates how to handle **complex actions** that require different payloads (data) using **TypeScript's discriminated union types**. 
 
 ### Key Changes:
-* **Created `counterReducer.ts`:**
-    * Defined a **`counterReducer`** function that accepts `(state: number, action: Action)` and returns the new state (`number`).
-    * Defined the **`Action`** interface using a union of literal types (`"INCREMENT" | "RESET"`) to ensure type-safety for action dispatching.
-    * Implemented the core logic (checking `action.type` and returning `state + 1`, `0`, or `state`).
-* **Refactor `Counter.tsx`:**
-    * Replaced `useState` with **`useReducer(counterReducer, 0)`**.
-    * Destructured the returned array into `value` (state) and **`dispatch`** (function to trigger state changes).
-    * Updated button click handlers to call `dispatch({ type: 'ACTION_TYPE' })` instead of directly calling `setValue()`.
-* **Update `App.tsx`:** Rendered the `Counter` component to test the functionality.
+* **Created `tasksReducer.ts`:**
+    * Defined the **`Task`** interface (State type).
+    * Defined two distinct action interfaces: **`AddTask`** (requires `task: Task`) and **`DeletTask`** (requires `taskId: number`).
+    * Created the **`TaskAction`** type as a union of these interfaces (`AddTask | DeletTask`). This allows the TypeScript compiler to infer the correct payload property (e.g., `action.task` or `action.taskId`) based on the `action.type` string literal.
+    * Implemented the `tasksReducer` function using a `switch` statement over `action.type` for clean and concise state transitions.
+* **Refactor `TaskList.tsx`:**
+    * Replaced `useState` with **`useReducer(tasksReducer, [])`**.
+    * `ADD` action: Dispatched an action object including `type: "ADD"` and the new `task` object as the payload.
+    * `DELETE` action: Dispatched an action object including `type: "DELETE"` and the `taskId` as the payload.
 
-This change successfully extracts state logic out of the component, making the component "purely responsible for the markup."
+This approach ensures strong type safety and better organization when state updates depend on variable data payloads.
+
 
 
 # my-github Account : 
