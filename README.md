@@ -22,24 +22,26 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #4-Exercise-Working-with-Reducers_mp4_4min_37sec ] - Refactor: Implement Auth Reducer for LoginStatus
+[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #5-Sharing-State-using-React-Context_mp4_9min_42sec ] - Feature: Share Task State using React Context
 
-## Consolidate authentication state logic using `useReducer`
+## Implement React Context to share task state and dispatch function, avoiding Prop Drilling.
 
-Refactored the `LoginStatus` component to centralize its state management (login/logout) into a dedicated reducer, applying the pattern of using **discriminated unions for actions with different payloads**.
+Refactored the centralized task state logic from `TaskList.tsx` up to `App.tsx` and used **React Context** to share this state globally across the component tree without passing props down manually (Prop Drilling).
 
 ### Key Changes:
-* **Created `authReducer.ts`:**
-    * Defined state type as `string` (for the username).
-    * Defined two distinct action interfaces: **`LoginAction`** (type `"LOGIN"`, requires `username: string`) and **`LogoutAction`** (type `"LOGOUT"`, requires no payload).
-    * Created **`AuthAction`** as a union type (`LoginAction | LogoutAction`).
-    * Implemented the `authReducer` logic using `if` statements to handle state transitions (setting username on LOGIN, clearing username on LOGOUT).
-* **Refactor `LoginStatus.tsx`:**
-    * Replaced `useState` with **`useReducer(authReducer, "")`**.
-    * Updated the "Login" button to dispatch a **`LOGIN`** action with the `username` payload.
-    * Updated the "Logout" link to dispatch a simple **`LOGOUT`** action.
+* **Lifted State:** Moved the `useReducer(tasksReducer, [])` logic from `TaskList.tsx` up to **`App.tsx`**.
+* **Created `tasksContext.ts`:**
+    * Defined the context shape using **`TasksContextType`** (containing `tasks: Task[]` and `dispatch: Dispatch<TaskAction>`).
+    * Exported **`Task`** and **`TaskAction`** types from `tasksReducer.ts` for use in the context definition.
+    * Created the context instance using `React.createContext<TasksContextType>({} as TasksContextType)`.
+* **Provided Context (`App.tsx`):**
+    * Wrapped the relevant components (`<NavBar />` and `<HomePage />`) with **`<TasksContext.Provider>`**.
+    * Passed the state and dispatch function: `value={{ tasks, dispatch }}`.
+* **Consumed Context:**
+    * **`TaskList.tsx`:** Replaced local `useReducer` with **`useContext(TasksContext)`** to access the `tasks` array and the `dispatch` function.
+    * **`NavBar.tsx`:** Used **`useContext(TasksContext)`** to access `tasks` and display `tasks.length` dynamically in the badge.
 
-This moves the authentication state logic outside of the component, achieving better separation of concerns and maintaining type safety.
+This change successfully decouples the task state from the specific components, improving modularity and maintainability.
 
 
 
