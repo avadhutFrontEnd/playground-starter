@@ -22,24 +22,24 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #3-Creating-Complex-Actions_mp4_6min_46sec ] - Feature: Implement useReducer for TaskList with complex actions
+[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #4-Exercise-Working-with-Reducers_mp4_4min_37sec ] - Refactor: Implement Auth Reducer for LoginStatus
 
-## Refactor TaskList state logic using `useReducer` and discriminated union types for complex actions
+## Consolidate authentication state logic using `useReducer`
 
-Applied the `useReducer` hook to the `TaskList` component to centralize the state management logic (adding and deleting tasks). This exercise demonstrates how to handle **complex actions** that require different payloads (data) using **TypeScript's discriminated union types**. 
+Refactored the `LoginStatus` component to centralize its state management (login/logout) into a dedicated reducer, applying the pattern of using **discriminated unions for actions with different payloads**.
 
 ### Key Changes:
-* **Created `tasksReducer.ts`:**
-    * Defined the **`Task`** interface (State type).
-    * Defined two distinct action interfaces: **`AddTask`** (requires `task: Task`) and **`DeletTask`** (requires `taskId: number`).
-    * Created the **`TaskAction`** type as a union of these interfaces (`AddTask | DeletTask`). This allows the TypeScript compiler to infer the correct payload property (e.g., `action.task` or `action.taskId`) based on the `action.type` string literal.
-    * Implemented the `tasksReducer` function using a `switch` statement over `action.type` for clean and concise state transitions.
-* **Refactor `TaskList.tsx`:**
-    * Replaced `useState` with **`useReducer(tasksReducer, [])`**.
-    * `ADD` action: Dispatched an action object including `type: "ADD"` and the new `task` object as the payload.
-    * `DELETE` action: Dispatched an action object including `type: "DELETE"` and the `taskId` as the payload.
+* **Created `authReducer.ts`:**
+    * Defined state type as `string` (for the username).
+    * Defined two distinct action interfaces: **`LoginAction`** (type `"LOGIN"`, requires `username: string`) and **`LogoutAction`** (type `"LOGOUT"`, requires no payload).
+    * Created **`AuthAction`** as a union type (`LoginAction | LogoutAction`).
+    * Implemented the `authReducer` logic using `if` statements to handle state transitions (setting username on LOGIN, clearing username on LOGOUT).
+* **Refactor `LoginStatus.tsx`:**
+    * Replaced `useState` with **`useReducer(authReducer, "")`**.
+    * Updated the "Login" button to dispatch a **`LOGIN`** action with the `username` payload.
+    * Updated the "Logout" link to dispatch a simple **`LOGOUT`** action.
 
-This approach ensures strong type safety and better organization when state updates depend on variable data payloads.
+This moves the authentication state logic outside of the component, achieving better separation of concerns and maintaining type safety.
 
 
 
