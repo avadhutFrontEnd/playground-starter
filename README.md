@@ -22,32 +22,27 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #11-Organizing-Code-for-Scalability-and-Maintainability_mp4_9min_37sec ] - Refactor: Organize Task Modules and Hide Implementation Details
+[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #12-Exercise-Organizing-Code_mp4_3min_09sec ] - Refactor: Organize Code by Functional Areas (Auth and Counter)
 
-## Consolidated task-related components into a single package and refined the public interface for better scalability.
+## Restructured state management code into dedicated functional modules (`auth` and `counter`) for improved scalability and organization.
 
-Refactored the task state management code by grouping all related building blocks (Provider, Context, Reducer, Hook, and Component) into a **single `tasks` directory/module** to enhance modularity and maintainability. Implemented the principle of **hiding implementation details** by exposing only necessary public components.
+Applied the organizational principle of grouping related state management building blocks by **functional area** rather than by artifact type (e.g., placing all files related to the user in an `auth` folder).
 
 ### Key Changes:
-* **Created `tasks` Module:** Created the `src/state-management/tasks` folder and moved `TaskList.tsx`, `TasksProvider.tsx`, `tasksContext.ts`, and `tasksReducer.ts` into it.
-* **Encapsulated Reducer Logic (Hiding Implementation):**
-    * **Merged `tasksReducer.ts`** content (interfaces, types, and the reducer function) directly **into `TasksProvider.tsx`**.
-    * Deleted the separate `tasksReducer.ts` file, making the reducer logic an internal implementation detail of the provider.
-* **Eliminated Custom Hook:**
-    * The `useTasks` custom hook was only used in `TaskList.tsx`. The simple `useContext(TasksContext)` logic was moved directly into `TaskList.tsx`.
-    * Deleted the separate `useTasks.ts` file.
-* **Defined Public Interface (`index.ts`):**
-    * Created **`src/state-management/tasks/index.ts`** to define the module's public contract.
-    * Exported only the consumer-facing components: `TasksProvider` and `TaskList`.
-* **Updated Imports:**
-    * Updated imports across the application (e.g., `App.tsx`, `TaskList.tsx`, and `tasksContext.ts`) to use the new module paths and structure.
-    * The **`tasksContext.ts`** now imports `Task` and `TaskAction` types from the relative path of **`TasksProvider.tsx`**.
-* **Simplified `App.tsx`:** The imports of `TasksProvider` and `TaskList` now target the module index: `import { TasksProvider, TaskList } from "./state-management/tasks"`.
+* **Created `auth` Module:**
+    * Created the `src/state-management/auth` folder.
+    * Moved all authentication-related files: `AuthProvider.tsx`, `LoginStatus.tsx`, `authContext.ts`, and `useAuth.ts`.
+    * **Encapsulated Reducer:** The content of `authReducer.ts` (types and function) was **merged directly into `AuthProvider.tsx`**, and the redundant `authReducer.ts` file was deleted.
+* **Created `counter` Module:**
+    * Created the `src/state-management/counter` folder.
+    * Moved the `Counter.tsx` component and `counterReducer.ts` into this folder.
+    * The empty `contexts`, `hooks`, and `reducers` folders were deleted.
+* **Code Cleanup and Imports:**
+    * Updated all relative and absolute import paths across the application to reflect the new modular structure.
+    * The `useAuth` hook was kept as a separate file within the `auth` module because it is considered a reusable public interface for consumers.
+    * The `App.tsx` component is now clean, importing components directly from their functional modules (e.g., `import AuthProvider from "./state-management/auth/AuthProvider"`).
 
-This structure hides the complex state management internals (reducer, context, etc.) from consumers, ensuring future changes to the state implementation won't break external components.
-
-### Remaining Build Errors Note:
-The remaining build errors relate to the `useAddTodo.ts` file and TypeScript implicit `any` types, indicating issues with the **React Query setup (Todo module)** that were not addressed in the current video lesson. These will need to be resolved when working on the `todo` service implementation.
+This refactoring establishes a highly scalable structure where the application is divided into independent, functional domains: `auth`, `counter`, and `tasks`.
 
 
 # my-github Account : 
