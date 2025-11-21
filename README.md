@@ -22,26 +22,26 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #5-Sharing-State-using-React-Context_mp4_9min_42sec ] - Feature: Share Task State using React Context
+[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #6-Exercise-Working-with-Context_mp4_4min_24sec ] - Feature: Share Authentication State using React Context
 
-## Implement React Context to share task state and dispatch function, avoiding Prop Drilling.
+## Implemented Auth Context to share user status and dispatch function globally.
 
-Refactored the centralized task state logic from `TaskList.tsx` up to `App.tsx` and used **React Context** to share this state globally across the component tree without passing props down manually (Prop Drilling).
+Refactored the local authentication state from `LoginStatus.tsx` to `App.tsx` and created a new **Auth Context** to share the current user (`user`) and the dispatch function (`authDispatch`) with the entire component tree, demonstrating how to use multiple independent contexts.
 
 ### Key Changes:
-* **Lifted State:** Moved the `useReducer(tasksReducer, [])` logic from `TaskList.tsx` up to **`App.tsx`**.
-* **Created `tasksContext.ts`:**
-    * Defined the context shape using **`TasksContextType`** (containing `tasks: Task[]` and `dispatch: Dispatch<TaskAction>`).
-    * Exported **`Task`** and **`TaskAction`** types from `tasksReducer.ts` for use in the context definition.
-    * Created the context instance using `React.createContext<TasksContextType>({} as TasksContextType)`.
+* **Lifted Auth State (`App.tsx`):**
+    * Moved `const [user, dispatch] = useReducer(authReducer, "")` from `LoginStatus.tsx` to `App.tsx`.
+    * Renamed dispatch functions to **`tasksDispatch`** and **`authDispatch`** to avoid naming conflicts.
+* **Created `authContext.ts`:**
+    * Defined the context shape using **`AuthContextType`** (containing `user: string` and `dispatch: Dispatch<AuthAction>`).
+    * Exported the **`AuthAction`** type from `authReducer.ts` to be used in the context definition.
+    * Created the context instance: `AuthContext`.
 * **Provided Context (`App.tsx`):**
-    * Wrapped the relevant components (`<NavBar />` and `<HomePage />`) with **`<TasksContext.Provider>`**.
-    * Passed the state and dispatch function: `value={{ tasks, dispatch }}`.
+    * Wrapped the component tree with a new **`<AuthContext.Provider>`** (nested around the `TasksContext.Provider`).
+    * Passed the state and dispatch: `value={{ user, dispatch: authDispatch }}`.
 * **Consumed Context:**
-    * **`TaskList.tsx`:** Replaced local `useReducer` with **`useContext(TasksContext)`** to access the `tasks` array and the `dispatch` function.
-    * **`NavBar.tsx`:** Used **`useContext(TasksContext)`** to access `tasks` and display `tasks.length` dynamically in the badge.
-
-This change successfully decouples the task state from the specific components, improving modularity and maintainability.
+    * **`LoginStatus.tsx`:** Replaced local `useReducer` with **`useContext(AuthContext)`** to access `user` and `dispatch` for login/logout actions.
+    * **`TaskList.tsx`:** Used **`useContext(AuthContext)`** to access the `user` and render their name, verifying the state is accessible deeper in the tree.
 
 
 
