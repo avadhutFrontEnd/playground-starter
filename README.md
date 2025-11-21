@@ -22,21 +22,26 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #9-Creating-a-Hook-to-Access-Context_mp4_1min_24sec ] - Refactor: Create useAuth Custom Hook
+[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #10-Exercise-Creating-a-Provider_mp4_2min_51sec ] - Refactor: Create TasksProvider and useTasks Hook
 
-## Abstracted AuthContext access into a reusable custom hook.
+## Modularized tasks state management using a Custom Provider and Access Hook.
 
-Created the **`useAuth`** custom hook to simplify accessing the shared authentication state and dispatch function, improving component readability and reducing direct dependency on `AuthContext`.
+Completed the refactoring of the task state by creating a reusable **`TasksProvider`** component and the accompanying **`useTasks`** custom hook. This makes the state management logic entirely encapsulated and improves the clarity of the `App` component and consumers like `TaskList`.
 
 ### Key Changes:
-* **Created `useAuth.ts` hook:**
-    * Defined a simple function `useAuth` that internally calls **`useContext(AuthContext)`** and returns the context value (the `{ user, dispatch }` object).
-* **Refactored `LoginStatus.tsx`:**
-    * Replaced the direct use of `useContext(AuthContext)` with the cleaner **`useAuth()`** call.
-    * Removed the need to import `useContext` and `AuthContext` from this component, simplifying the import block.
+* **Created `TasksProvider.tsx`:**
+    * Moved the task state logic (`const [tasks, dispatch] = useReducer(tasksReducer, []);`) from `App.tsx` into this new component.
+    * Ensures the component accepts and renders `children: ReactNode`.
+    * Returns the **`<TasksContext.Provider>`** with the state and dispatch function, fully encapsulating the task state logic.
+* **Created `useTasks.ts` hook:**
+    * Defined the custom hook **`useTasks`** which simplifies accessing the shared task data by calling `useContext(TasksContext)` internally.
+* **Simplified `App.tsx`:**
+    * Replaced the explicit `useReducer` and `TasksContext.Provider` with the clean **`<TasksProvider>`** component, leaving `App.tsx` without local state logic.
+* **Refactored `TaskList.tsx`:**
+    * Replaced `useContext(TasksContext)` with the concise **`useTasks()`** hook.
+    * Also replaced `useContext(AuthContext)` with **`useAuth()`** for consistency.
 
-This pattern, similar to `useQueryClient` in React Query, makes components more concise and less aware of the underlying context implementation details.
-
+This modularization effort leaves the `App.tsx` component clean and clearly defines two independent, reusable state domains: Authentication (`AuthProvider`) and Tasks (`TasksProvider`).
 
 
 # my-github Account : 
