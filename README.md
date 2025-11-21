@@ -22,26 +22,24 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #6-Exercise-Working-with-Context_mp4_4min_24sec ] - Feature: Share Authentication State using React Context
+[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #8-Creating-a-Custom-Provider_mp4_2min_58sec ] - Refactor: Create Custom AuthProvider Component
 
-## Implemented Auth Context to share user status and dispatch function globally.
+## Encapsulated Auth State and Context Provider into a Custom Component for modularity.
 
-Refactored the local authentication state from `LoginStatus.tsx` to `App.tsx` and created a new **Auth Context** to share the current user (`user`) and the dispatch function (`authDispatch`) with the entire component tree, demonstrating how to use multiple independent contexts.
+Refactored the `App.tsx` component to create a custom **`AuthProvider`** component. This component encapsulates the authentication state logic (`useReducer`) and the context provision (`AuthContext.Provider`), resulting in cleaner, more modular, and reusable code.
 
 ### Key Changes:
-* **Lifted Auth State (`App.tsx`):**
-    * Moved `const [user, dispatch] = useReducer(authReducer, "")` from `LoginStatus.tsx` to `App.tsx`.
-    * Renamed dispatch functions to **`tasksDispatch`** and **`authDispatch`** to avoid naming conflicts.
-* **Created `authContext.ts`:**
-    * Defined the context shape using **`AuthContextType`** (containing `user: string` and `dispatch: Dispatch<AuthAction>`).
-    * Exported the **`AuthAction`** type from `authReducer.ts` to be used in the context definition.
-    * Created the context instance: `AuthContext`.
-* **Provided Context (`App.tsx`):**
-    * Wrapped the component tree with a new **`<AuthContext.Provider>`** (nested around the `TasksContext.Provider`).
-    * Passed the state and dispatch: `value={{ user, dispatch: authDispatch }}`.
-* **Consumed Context:**
-    * **`LoginStatus.tsx`:** Replaced local `useReducer` with **`useContext(AuthContext)`** to access `user` and `dispatch` for login/logout actions.
-    * **`TaskList.tsx`:** Used **`useContext(AuthContext)`** to access the `user` and render their name, verifying the state is accessible deeper in the tree.
+* **Created `AuthProvider.tsx`:**
+    * Defined the `AuthProvider` functional component.
+    * Added an interface for **`Props`** to accept **`children: ReactNode`**, allowing the provider to wrap other components.
+    * Moved the authentication state logic (`const [user, dispatch] = useReducer(authReducer, "")`) from `App.tsx` into this new component.
+    * Renamed the dispatch function back to **`dispatch`** as it is the only one in this component, making the code cleaner.
+    * Returned the **`<AuthContext.Provider>`** and rendered `{children}` inside it.
+* **Simplified `App.tsx`:**
+    * Replaced the explicit `<AuthContext.Provider>` nesting in `App.tsx` with the cleaner **`<AuthProvider>`** component.
+    * Removed the need for uniquely naming the authentication dispatch function (e.g., `authDispatch`) in `App.tsx`.
+
+This pattern improves the separation of concerns, making the authentication logic easily movable or reusable in different applications.
 
 
 
