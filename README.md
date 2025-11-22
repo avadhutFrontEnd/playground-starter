@@ -22,27 +22,28 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #12-Exercise-Organizing-Code_mp4_3min_09sec ] - Refactor: Organize Code by Functional Areas (Auth and Counter)
+[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #16-Managing-Application-State-with-Zustand_mp4_7min_24sec ] - Feature: Implement Counter State with Zustand
 
-## Restructured state management code into dedicated functional modules (`auth` and `counter`) for improved scalability and organization.
+## Migrated the Counter feature from `useReducer` to Zustand for simplified state management.
 
-Applied the organizational principle of grouping related state management building blocks by **functional area** rather than by artifact type (e.g., placing all files related to the user in an `auth` folder).
+Implemented Zustand to manage the counter state, demonstrating a pattern that significantly reduces boilerplate compared to the `useReducer`/Context pattern.
 
 ### Key Changes:
-* **Created `auth` Module:**
-    * Created the `src/state-management/auth` folder.
-    * Moved all authentication-related files: `AuthProvider.tsx`, `LoginStatus.tsx`, `authContext.ts`, and `useAuth.ts`.
-    * **Encapsulated Reducer:** The content of `authReducer.ts` (types and function) was **merged directly into `AuthProvider.tsx`**, and the redundant `authReducer.ts` file was deleted.
-* **Created `counter` Module:**
-    * Created the `src/state-management/counter` folder.
-    * Moved the `Counter.tsx` component and `counterReducer.ts` into this folder.
-    * The empty `contexts`, `hooks`, and `reducers` folders were deleted.
-* **Code Cleanup and Imports:**
-    * Updated all relative and absolute import paths across the application to reflect the new modular structure.
-    * The `useAuth` hook was kept as a separate file within the `auth` module because it is considered a reusable public interface for consumers.
-    * The `App.tsx` component is now clean, importing components directly from their functional modules (e.g., `import AuthProvider from "./state-management/auth/AuthProvider"`).
+* **Installation:** Installed the `zustand` library.
+* **Store Creation (`src/state-management/counter/store.ts`):**
+    * Defined the `CounterStore` interface, outlining the state (`counter: number`) and actions (`increment: () => void`, `reset: () => void`).
+    * Used the `create` function from Zustand to define the store logic.
+    * Implemented state updates immutably using the `set` function within the action methods.
+    * Exported the resulting custom hook, `useCounterStore`.
+* **Component Refactoring (`Counter.tsx`):**
+    * Removed `useReducer` and the reliance on `counterReducer`.
+    * Used `useCounterStore()` to access and destructure state (`counter`) and actions (`increment`, `reset`).
+    * Replaced `dispatch` calls with direct action function calls (e.g., `increment()`).
+* **Shared State Access (`NavBar.tsx`):**
+    * Integrated `useCounterStore()` in `NavBar.tsx` to display the current counter value, proving the store's accessibility across the component tree without requiring a Provider component.
+* **Cleanup:** Deleted the redundant `src/state-management/counter/counterReducer.ts` file.
 
-This refactoring establishes a highly scalable structure where the application is divided into independent, functional domains: `auth`, `counter`, and `tasks`.
+This change successfully isolates and simplifies the counter state management, providing a cleaner interface for components.
 
 
 # my-github Account : 
