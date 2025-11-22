@@ -22,35 +22,40 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #18-Preventing-Unnecessary-Renders-with-Selectors_mp4_2min_42sec ] - Feature: Prevent Unnecessary Renders using Zustand Selectors
+[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #19-Inspecting-Stores-with-Zustand-DevTools_mp4_2min_35sec ] - Feature: Integrate Zustand DevTools
 
-## Optimized component rendering by using Zustand selectors.
+## Integrated `simple-zustand-devtools` to enable store inspection and modification via React DevTools.
 
-This lesson demonstrated how to use **selectors** (a function passed to the store hook) to specify exactly which piece of state a component is dependent on, preventing unnecessary re-renders when unrelated state changes.
+Added a development dependency to allow for easy inspection and debugging of the Zustand store state directly within the browser's React Developer Tools.
 
 ---
 
-### Key Changes:
+### Key Steps:
 
-* **Updated `store.ts` (`counter` module):**
-    * Added a new state property, **`max: number`**, to the `CounterStore` interface and initialized it to `5`.
-    * Modified the **`reset`** action (for demonstration purposes) to update *only* the `max` property to `10`: `reset: () => set(() => ({ max: 10 }))`.
-    * The store now contains two independent pieces of state (`counter` and `max`) that can be updated separately.
-* **Implemented Selector (`NavBar.tsx`):**
-    * In `NavBar.tsx`, the `useCounterStore` hook call was modified to include a **selector function**:
+1.  **Installed DevTools Library:** Installed the `simple-zustand-devtools` package:
+    ```bash
+    npm i simple-zustand-devtools
+    ```
+2.  **Installed Node Types:** Installed type declarations for the Node environment to access `process.env`:
+    ```bash
+    npm i -D @types/node
+    ```
+3.  **Configured Store (`src/state-management/counter/store.ts`):**
+    * Imported the **`mountStoreDevtool`** function.
+    * Wrapped the initialization call within a development environment check:
         ```typescript
-        const counter = useCounterStore((s) => s.counter);
+        if (process.env.NODE_ENV === "development")
+          mountStoreDevtool("Counter Store", useCounterStore);
         ```
-    * The selector `(s) => s.counter` explicitly tells Zustand that this component only needs and should only re-render if the **`counter`** property changes.
-* **Result:**
-    * When the counter is incremented (updating `counter`), the `NavBar` re-renders.
-    * When the counter is reset (updating `max`), the `NavBar` does **not** re-render, effectively preventing unnecessary updates.
+    * Passed the desired display name ("Counter Store") and the Zustand hook (`useCounterStore`) to the function.
 
-This technique is crucial for optimizing performance in large applications by ensuring components only react to relevant state changes.
+### Result:
+
+The store's current state (`counter`, `max`) and functions are now visible and editable under the **DevTool** tab within the React DevTools panel in the browser.
 
 ---
 
-The next content section appears to be related to the `todoService` for API calls and addressing the remaining React Query/Todo TypeScript errors.
+The next content section appears to be related to the `todoService` for API calls, which will involve setting up the reusable HTTP service and addressing the remaining React Query/Todo TypeScript errors.
 
 Would you like to continue with the content for the Todo service setup?
 
