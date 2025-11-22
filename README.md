@@ -22,36 +22,35 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #17-Exercise-Working-with-Zustand_mp4_4min_15sec ] - Feature: Implement Authentication State with Zustand
+[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #18-Preventing-Unnecessary-Renders-with-Selectors_mp4_2min_42sec ] - Feature: Prevent Unnecessary Renders using Zustand Selectors
 
-## Migrated the Authentication feature from Context/Provider to Zustand.
+## Optimized component rendering by using Zustand selectors.
 
-Applied the Zustand pattern to the authentication state, successfully replacing all boilerplate files associated with the Context/Reducer pattern for the user status.
+This lesson demonstrated how to use **selectors** (a function passed to the store hook) to specify exactly which piece of state a component is dependent on, preventing unnecessary re-renders when unrelated state changes.
 
 ---
 
 ### Key Changes:
 
-* **Store Creation (`src/state-management/auth/store.ts`):**
-    * Defined the **`AuthStore`** interface (state: `user: string`, actions: `login: (username: string) => void`, `logout: () => void`).
-    * Used `create<AuthStore>` to implement the store.
-    * Implemented **`login`** and **`logout`** actions using the `set` function, simplifying state updates directly (e.g., `set(() => ({ user: username }))`).
-    * Exported the resulting hook, **`useAuthStore`**.
-* **Component Refactoring (`LoginStatus.tsx`):**
-    * Replaced the `useContext` hook usage with the direct call to **`useAuthStore()`**.
-    * Destructured `user`, `login`, and `logout`.
-    * Replaced action dispatching with direct function calls (e.g., `login("mosh.hamedani")`).
-* **Application Structure Cleanup:**
-    * **Deleted** the redundant boilerplate files for this feature: `AuthProvider.tsx`, `authContext.ts`, and `useAuth.ts`.
-    * Removed the **`<AuthProvider>`** component wrapper from `App.tsx` as it's no longer needed.
-* **Cross-Component Access (`TaskList.tsx`):**
-    * Updated `TaskList.tsx` to use **`useAuthStore()`** instead of the deprecated `useAuth()` hook for accessing the `user` property.
+* **Updated `store.ts` (`counter` module):**
+    * Added a new state property, **`max: number`**, to the `CounterStore` interface and initialized it to `5`.
+    * Modified the **`reset`** action (for demonstration purposes) to update *only* the `max` property to `10`: `reset: () => set(() => ({ max: 10 }))`.
+    * The store now contains two independent pieces of state (`counter` and `max`) that can be updated separately.
+* **Implemented Selector (`NavBar.tsx`):**
+    * In `NavBar.tsx`, the `useCounterStore` hook call was modified to include a **selector function**:
+        ```typescript
+        const counter = useCounterStore((s) => s.counter);
+        ```
+    * The selector `(s) => s.counter` explicitly tells Zustand that this component only needs and should only re-render if the **`counter`** property changes.
+* **Result:**
+    * When the counter is incremented (updating `counter`), the `NavBar` re-renders.
+    * When the counter is reset (updating `max`), the `NavBar` does **not** re-render, effectively preventing unnecessary updates.
 
-This refactoring further simplifies the state management in the application, leaving only the complex task state still managed by the custom Context/Provider pattern.
+This technique is crucial for optimizing performance in large applications by ensuring components only react to relevant state changes.
 
 ---
 
-The next content section appears to be related to the `todoService` for API calls, which will involve setting up the reusable HTTP service and addressing the remaining React Query/Todo TypeScript errors.
+The next content section appears to be related to the `todoService` for API calls and addressing the remaining React Query/Todo TypeScript errors.
 
 Would you like to continue with the content for the Todo service setup?
 
