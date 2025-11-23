@@ -22,42 +22,52 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #2-Setting-Up-Routing_mp4_3min_09sec ] - Feature: Set Up Routing with React Router DOM
+[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #3-Navigation_mp4_2min_43sec ] - Feature: Implement Client-Side Navigation
 
-## Set up basic client-side routing using `react-router-dom`.
+## Implemented client-side navigation using React Router's `<Link />` component and the `useNavigate` hook.
 
-The application's structure was updated to use **`createBrowserRouter`** and **`<RouterProvider />`** to enable navigation between different pages/views.
+This update replaces the default browser behavior (full page reload for `<a>` tags) with faster, single-page application (SPA) style navigation.
 
 ---
 
-### Key Steps and Changes:
+### Key Navigation Methods:
 
-* **Installation:** Installed the React Router DOM library:
-    ```bash
-    npm i react-router-dom@6.10.0
-    ```
-* **Router Definition (`src/routing/routes.tsx`):**
-    * Created the router object using **`createBrowserRouter`** (the recommended modern approach).
-    * Defined an array of **route objects**, each specifying a `path` and the `element` (component) to render:
-        * Home Page: `{ path: "/", element: <HomePage /> }`
-        * Users List: `{ path: "/users", element: <UserListPage /> }`
-    * Exported the resulting `router` object.
-
-* **Application Integration (`src/main.tsx`):**
-    * The top-level `<App />` component was replaced with the **`<RouterProvider />`** component.
-    * The created router object was passed to the provider via the `router` prop:
+1.  ### Declarative Navigation (Links)
+    * **Problem with `<a>`:** Using a standard HTML `<a>` tag triggers a **full page reload**, which is slow and wastes bandwidth by re-downloading the entire page HTML.
+    * **Solution with `<Link />`:** The React Router **`<Link />`** component is used as a drop-in replacement for `<a>` tags.
+        * It prevents the full page reload.
+        * It only updates the necessary portion of the DOM, resulting in fast client-side navigation.
+    * **Implementation (`src/routing/HomePage.tsx`):**
         ```tsx
-        <RouterProvider router={router} />
+        import { Link } from "react-router-dom";
+        // ...
+        <Link to="/users">Users</Link>
         ```
-    * This component provides the necessary context and controls to manage the application's routing state, letting React Router determine which component to render based on the current URL.
-
-This setup establishes the fundamental structure for handling navigation across different pages in the application.
 
 ---
 
-The next step will involve adding a component to act as the overall page layout and handling components that should be rendered across all routes.
+2.  ### Programmatic Navigation (Redirection)
+    * To redirect a user based on an application event (like form submission, login success, or button clicks), the **`useNavigate`** hook is used.
+    * **`useNavigate`** returns a function that can be called with the target path to trigger navigation.
+    * **Implementation (`src/routing/ContactPage.tsx`):**
+        * Added a new route: `{ path: "/contact", element: <ContactPage /> }`
+        * Used the hook to redirect upon form submission:
+            ```tsx
+            import { useNavigate } from "react-router-dom";
+            // ...
+            const navigate = useNavigate();
+            // ...
+            <form onSubmit={(event) => {
+              // ...
+              navigate("/"); // Redirects to the home page
+            }}>
+            ```
 
-Would you like to move on to the next lesson, which focuses on creating a persistent layout using the router?
+---
+
+The application now supports modern, fast navigation between the defined routes.
+
+Would you like to continue with the next lesson on building a persistent layout for the routes?
 
 
 # my-github Account : 
