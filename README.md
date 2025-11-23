@@ -22,47 +22,53 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #6-Nested-Routes_mp4_3min_23sec ] - Feature: Implement Persistent Layout and Nested Routes
+[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #7-Exercise-Working-with-Nested-Routes_mp4_3min_09sec ] - Refactor: Implement Master-Detail Layout with Nested Routes
 
-## Implemented a persistent layout using Nested Routes to ensure common components (like the NavBar) are displayed across multiple pages.
+## Implemented a Master-Detail layout for user data using a second level of Nested Routes.
 
-This refactoring utilizes the **`<Outlet />`** component and the `children` property in the route configuration to define a master layout for the application.
+This pattern allows the `UserList` (master view) to remain visible on the left while the corresponding `UserDetail` (detail view) is dynamically rendered on the right. 
 
 ---
 
-### Key Changes:
+### Key Steps and Changes:
 
-1.  ### Created Layout Component (`src/routing/Layout.tsx`)
-    * Introduced the `<Layout />` component which contains the common structural elements:
-        * The **`<NavBar />`** component.
-        * The **`<Outlet />`** component, which acts as a placeholder. 
+1.  ### Created Master-Detail Layout Component (`src/routing/UsersPage.tsx`)
+    * Introduced a new wrapper component, `<UsersPage />`, which renders the **Bootstrap grid structure**:
+        * Left column: Renders the static **`<UserList />`**.
+        * Right column: Renders the dynamic content using **`<Outlet />`**.
+    * The original components were renamed for clarity: `UserListPage.tsx` became `UserList.tsx` and `UserDetailPage.tsx` became `UserDetail.tsx`.
 
-    * **`<Outlet />` Function:** At runtime, the content of the matched child route (e.g., `<HomePage />` or `<UserListPage />`) is rendered exactly where the `<Outlet />` component is placed.
+2.  ### Configured Double-Nested Routes (`src/routing/routes.tsx`)
+    * The main `/users` route was updated to render the new **`<UsersPage />`** layout.
+    * The dynamic user detail route (`:id`) was nested as a **child** of the `users` route.
 
-2.  ### Configured Nested Routes (`src/routing/routes.tsx`)
-    * The main route path (`/`) was set to render the `<Layout />` component.
-    * All previously defined routes (`/`, `/users`, `/contact`, `/users/:id`) were moved into the `children` array of the layout route.
-    * **Path Adjustment:** The paths of the child routes were made **relative** to the parent path (`/`), so the leading forward slash was removed (e.g., `/users` became `users`).
-    * **Index Route:** The root child route was explicitly defined as the default route to render when the parent path is matched, using **`index: true`**:
+    * **New Route Structure:**
         ```typescript
-        { index: true, element: <HomePage /> },
+        { 
+          path: "users",
+          element: <UsersPage />, // Renders UserList + Outlet
+          children: [
+            // This path ":id" is relative to the parent "users"
+            { path: ":id", element: <UserDetail /> } 
+          ],
+        },
         ```
-    * The final structure ensures the `Layout` always renders, and its children replace the `<Outlet />`.
+    * When the URL is `/users/1`, React Router renders: `Layout` -> `UsersPage` (with `UserList` visible) -> `UserDetail` (in the `UsersPage`'s `<Outlet />`).
 
-3.  ### Updated Navigation Links (`src/routing/NavBar.tsx`)
-    * The standard HTML `<a>` tags within the `NavBar` were replaced with React Router's **`<Link />`** components to ensure fast, client-side navigation between the pages:
-        ```tsx
-        <Link to="/" className="nav-link">Home</Link>
-        <Link to="/users" className="nav-link">Users</Link>
+3.  ### Displayed Detail Data (`src/routing/UserDetail.tsx`)
+    * The `UserDetail` component was updated to render the extracted route parameter:
+        ```typescript
+        const params = useParams();
+        return <p>User {params.id}</p>;
         ```
+
+This structure effectively creates the desired two-column layout for displaying user information without navigating entirely away from the user list.
 
 ---
 
-The application now maintains a consistent `NavBar` across the Home, User List, and User Detail pages.
+The next lesson will likely introduce error handling to catch navigation to non-existent pages.
 
-The next step will likely cover handling potential errors that arise during routing, such as when a user navigates to an undefined URL.
-
-Would you like to proceed with the next lesson on handling errors in routing?
+Would you like to move on to the next lesson on handling not-found pages?
 
 
 # my-github Account : 
