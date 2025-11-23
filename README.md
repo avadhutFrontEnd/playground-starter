@@ -22,51 +22,38 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #7-Exercise-Working-with-Nested-Routes_mp4_3min_09sec ] - Refactor: Implement Master-Detail Layout with Nested Routes
+[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #8-Styling-the-Active-Link_mp4_2min_20sec ] - Feature: Style Active Navigation Links using NavLink
 
-## Implemented a Master-Detail layout for user data using a second level of Nested Routes.
+## Implemented styling for the active navigation link using React Router's `<NavLink />` component.
 
-This pattern allows the `UserList` (master view) to remain visible on the left while the corresponding `UserDetail` (detail view) is dynamically rendered on the right. 
-
----
-
-### Key Steps and Changes:
-
-1.  ### Created Master-Detail Layout Component (`src/routing/UsersPage.tsx`)
-    * Introduced a new wrapper component, `<UsersPage />`, which renders the **Bootstrap grid structure**:
-        * Left column: Renders the static **`<UserList />`**.
-        * Right column: Renders the dynamic content using **`<Outlet />`**.
-    * The original components were renamed for clarity: `UserListPage.tsx` became `UserList.tsx` and `UserDetailPage.tsx` became `UserDetail.tsx`.
-
-2.  ### Configured Double-Nested Routes (`src/routing/routes.tsx`)
-    * The main `/users` route was updated to render the new **`<UsersPage />`** layout.
-    * The dynamic user detail route (`:id`) was nested as a **child** of the `users` route.
-
-    * **New Route Structure:**
-        ```typescript
-        { 
-          path: "users",
-          element: <UsersPage />, // Renders UserList + Outlet
-          children: [
-            // This path ":id" is relative to the parent "users"
-            { path: ":id", element: <UserDetail /> } 
-          ],
-        },
-        ```
-    * When the URL is `/users/1`, React Router renders: `Layout` -> `UsersPage` (with `UserList` visible) -> `UserDetail` (in the `UsersPage`'s `<Outlet />`).
-
-3.  ### Displayed Detail Data (`src/routing/UserDetail.tsx`)
-    * The `UserDetail` component was updated to render the extracted route parameter:
-        ```typescript
-        const params = useParams();
-        return <p>User {params.id}</p>;
-        ```
-
-This structure effectively creates the desired two-column layout for displaying user information without navigating entirely away from the user list.
+This ensures the user has a visual indicator of which page they are currently viewing, a crucial part of a good user experience.
 
 ---
 
-The next lesson will likely introduce error handling to catch navigation to non-existent pages.
+### Key Changes:
+
+1.  ### Switched to `<NavLink />` (`src/routing/NavBar.tsx`)
+    * The standard `<Link />` components were replaced with **`<NavLink />`** components:
+        ```tsx
+        <NavLink to="/" className="nav-link">Home</NavLink>
+        ```
+    * The key difference is that `<NavLink />` automatically adds the **`active`** class to the rendered element when its `to` prop matches the current URL.
+
+2.  ### Customizing the Active Class (Demonstration)
+    * While the default behavior worked with Bootstrap (which recognizes the `.active` class), customization is possible by passing a function to the `className` prop:
+        ```typescript
+        // Example of custom logic:
+        className={({ isActive }) => 
+          isActive ? "nav-link active" : "nav-link"
+        }
+        ```
+    * This function receives the `isActive` boolean property, allowing developers to apply any custom class name or logic based on the link's active status.
+
+This change ensures the navigation bar correctly highlights the current page without requiring manual state management.
+
+---
+
+The next lesson will likely focus on proper error handling for invalid or non-existent URLs.
 
 Would you like to move on to the next lesson on handling not-found pages?
 
