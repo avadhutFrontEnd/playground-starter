@@ -22,42 +22,42 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 3. Global State Management (2h) ] [ Video: #19-Inspecting-Stores-with-Zustand-DevTools_mp4_2min_35sec ] - Feature: Integrate Zustand DevTools
+[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #2-Setting-Up-Routing_mp4_3min_09sec ] - Feature: Set Up Routing with React Router DOM
 
-## Integrated `simple-zustand-devtools` to enable store inspection and modification via React DevTools.
+## Set up basic client-side routing using `react-router-dom`.
 
-Added a development dependency to allow for easy inspection and debugging of the Zustand store state directly within the browser's React Developer Tools.
+The application's structure was updated to use **`createBrowserRouter`** and **`<RouterProvider />`** to enable navigation between different pages/views.
 
 ---
 
-### Key Steps:
+### Key Steps and Changes:
 
-1.  **Installed DevTools Library:** Installed the `simple-zustand-devtools` package:
+* **Installation:** Installed the React Router DOM library:
     ```bash
-    npm i simple-zustand-devtools
+    npm i react-router-dom@6.10.0
     ```
-2.  **Installed Node Types:** Installed type declarations for the Node environment to access `process.env`:
-    ```bash
-    npm i -D @types/node
-    ```
-3.  **Configured Store (`src/state-management/counter/store.ts`):**
-    * Imported the **`mountStoreDevtool`** function.
-    * Wrapped the initialization call within a development environment check:
-        ```typescript
-        if (process.env.NODE_ENV === "development")
-          mountStoreDevtool("Counter Store", useCounterStore);
+* **Router Definition (`src/routing/routes.tsx`):**
+    * Created the router object using **`createBrowserRouter`** (the recommended modern approach).
+    * Defined an array of **route objects**, each specifying a `path` and the `element` (component) to render:
+        * Home Page: `{ path: "/", element: <HomePage /> }`
+        * Users List: `{ path: "/users", element: <UserListPage /> }`
+    * Exported the resulting `router` object.
+
+* **Application Integration (`src/main.tsx`):**
+    * The top-level `<App />` component was replaced with the **`<RouterProvider />`** component.
+    * The created router object was passed to the provider via the `router` prop:
+        ```tsx
+        <RouterProvider router={router} />
         ```
-    * Passed the desired display name ("Counter Store") and the Zustand hook (`useCounterStore`) to the function.
+    * This component provides the necessary context and controls to manage the application's routing state, letting React Router determine which component to render based on the current URL.
 
-### Result:
-
-The store's current state (`counter`, `max`) and functions are now visible and editable under the **DevTool** tab within the React DevTools panel in the browser.
+This setup establishes the fundamental structure for handling navigation across different pages in the application.
 
 ---
 
-The next content section appears to be related to the `todoService` for API calls, which will involve setting up the reusable HTTP service and addressing the remaining React Query/Todo TypeScript errors.
+The next step will involve adding a component to act as the overall page layout and handling components that should be rendered across all routes.
 
-Would you like to continue with the content for the Todo service setup?
+Would you like to move on to the next lesson, which focuses on creating a persistent layout using the router?
 
 
 # my-github Account : 
