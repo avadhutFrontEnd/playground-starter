@@ -22,56 +22,47 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #5-Getting-Data-about-the-Current-Route_mp4_2min_57sec ] - Feature: Access Current Route Data using React Router Hooks
+[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #6-Nested-Routes_mp4_3min_23sec ] - Feature: Implement Persistent Layout and Nested Routes
 
-## Implemented React Router hooks (`useParams`, `useSearchParams`, `useLocation`) to extract data and metadata about the current URL.
+## Implemented a persistent layout using Nested Routes to ensure common components (like the NavBar) are displayed across multiple pages.
 
-This feature allows components to be fully dynamic, reading route parameters and query strings to render specific content.
-
----
-
-### Key React Router Hooks
-
-1.  ### `useParams` (Access Route Parameters)
-    * **Purpose:** Extracts values from **dynamic segments** defined in the route path (e.g., `:id` in `/users/:id`).
-    * **Returns:** An object where keys are the parameter names (e.g., `id`).
-    * **Note:** All parameter values are returned as **strings** and must be parsed (e.g., to an integer) if needed for fetching or computation.
-    * **Implementation (`UserDetailPage.tsx`):**
-        ```typescript
-        const params = useParams();
-        // console.log(params.id); // Output: '3'
-        ```
-
-2.  ### `useSearchParams` (Access & Update Query Strings)
-    * **Purpose:** Accesses and provides a function to update the URL's **query string** (e.g., `?name=Alice&age=25`).
-    * **Returns:** An array containing:
-        1.  A `URLSearchParams` object (`searchParams`) for reading values (e.g., `searchParams.get("name")`).
-        2.  A function (`setSearchParams`) for updating the query string.
-    * **Usage Caution:** The `setSearchParams` function should only be called inside **event handlers** or **effects** to maintain component purity.
-    * **Implementation (`UserDetailPage.tsx`):**
-        ```typescript
-        const [searchParams, setSearchParams] = useSearchParams();
-        // console.log(searchParams.get("name")); // Output: 'Alice'
-        ```
-
-3.  ### `useLocation` (Access Current Location Metadata)
-    * **Purpose:** Provides an object containing detailed metadata about the current URL.
-    * **Returns:** A `location` object with properties like:
-        * **`pathname`**: The path part of the URL (e.g., `/users/3`).
-        * **`search`**: The raw query string (e.g., `?name=Alice&age=25`).
-    * **Implementation (`UserDetailPage.tsx`):**
-        ```typescript
-        const location = useLocation();
-        // console.log(location.pathname); 
-        ```
-
-These three hooks provide complete control over reading and interacting with the current URL state within any component.
+This refactoring utilizes the **`<Outlet />`** component and the `children` property in the route configuration to define a master layout for the application.
 
 ---
 
-The next step is to address the application's layout, ensuring common elements like the navigation bar and footer appear consistently across all new routes.
+### Key Changes:
 
-Would you like to continue with the next lesson on creating a persistent layout?
+1.  ### Created Layout Component (`src/routing/Layout.tsx`)
+    * Introduced the `<Layout />` component which contains the common structural elements:
+        * The **`<NavBar />`** component.
+        * The **`<Outlet />`** component, which acts as a placeholder. 
+
+    * **`<Outlet />` Function:** At runtime, the content of the matched child route (e.g., `<HomePage />` or `<UserListPage />`) is rendered exactly where the `<Outlet />` component is placed.
+
+2.  ### Configured Nested Routes (`src/routing/routes.tsx`)
+    * The main route path (`/`) was set to render the `<Layout />` component.
+    * All previously defined routes (`/`, `/users`, `/contact`, `/users/:id`) were moved into the `children` array of the layout route.
+    * **Path Adjustment:** The paths of the child routes were made **relative** to the parent path (`/`), so the leading forward slash was removed (e.g., `/users` became `users`).
+    * **Index Route:** The root child route was explicitly defined as the default route to render when the parent path is matched, using **`index: true`**:
+        ```typescript
+        { index: true, element: <HomePage /> },
+        ```
+    * The final structure ensures the `Layout` always renders, and its children replace the `<Outlet />`.
+
+3.  ### Updated Navigation Links (`src/routing/NavBar.tsx`)
+    * The standard HTML `<a>` tags within the `NavBar` were replaced with React Router's **`<Link />`** components to ensure fast, client-side navigation between the pages:
+        ```tsx
+        <Link to="/" className="nav-link">Home</Link>
+        <Link to="/users" className="nav-link">Users</Link>
+        ```
+
+---
+
+The application now maintains a consistent `NavBar` across the Home, User List, and User Detail pages.
+
+The next step will likely cover handling potential errors that arise during routing, such as when a user navigates to an undefined URL.
+
+Would you like to proceed with the next lesson on handling errors in routing?
 
 
 # my-github Account : 
