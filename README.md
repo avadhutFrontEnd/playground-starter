@@ -22,40 +22,45 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #8-Styling-the-Active-Link_mp4_2min_20sec ] - Feature: Style Active Navigation Links using NavLink
+[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #9-Handling-Errors_mp4_3min_22sec ] - Feature: Implement Custom Error and Not-Found Pages
 
-## Implemented styling for the active navigation link using React Router's `<NavLink />` component.
+## Implemented robust error handling for both application-thrown errors and invalid URLs using React Router's `errorElement`.
 
-This ensures the user has a visual indicator of which page they are currently viewing, a crucial part of a good user experience.
+This centralizes error reporting and provides a better user experience than the default browser error page.
 
 ---
 
 ### Key Changes:
 
-1.  ### Switched to `<NavLink />` (`src/routing/NavBar.tsx`)
-    * The standard `<Link />` components were replaced with **`<NavLink />`** components:
-        ```tsx
-        <NavLink to="/" className="nav-link">Home</NavLink>
-        ```
-    * The key difference is that `<NavLink />` automatically adds the **`active`** class to the rendered element when its `to` prop matches the current URL.
+1.  ### Defined Custom Error Component (`src/routing/ErrorPage.tsx`)
+    * Created the `<ErrorPage />` component to render a user-friendly error message.
+    * Used the **`useRouteError`** hook to access the error object thrown by the application or by the router (e.g., for 404 Not Found).
+    * Used the **`isRouteErrorResponse`** utility function to differentiate between:
+        * **Router Errors (404/Invalid Path):** If `isRouteErrorResponse(error)` is true, display **"Invalid page"**.
+        * **Application Errors:** Otherwise, display **"Unexpected error"**.
 
-2.  ### Customizing the Active Class (Demonstration)
-    * While the default behavior worked with Bootstrap (which recognizes the `.active` class), customization is possible by passing a function to the `className` prop:
+2.  ### Configured Global Error Boundary (`src/routing/routes.tsx`)
+    * The **`errorElement`** property was set on the **root route** (`path: "/"`) in the `createBrowserRouter` configuration:
         ```typescript
-        // Example of custom logic:
-        className={({ isActive }) => 
-          isActive ? "nav-link active" : "nav-link"
+        {
+          path: "/",
+          element: <Layout />,
+          errorElement: <ErrorPage />, // Catches all errors and 404s in child routes
+          children: [ /* ... */ ]
         }
         ```
-    * This function receives the `isActive` boolean property, allowing developers to apply any custom class name or logic based on the link's active status.
+    * By setting the `errorElement` on the parent (root) route, it acts as an **error boundary** that catches errors thrown in any of its nested child routes, including when no child route matches the URL (404).
 
-This change ensures the navigation bar correctly highlights the current page without requiring manual state management.
+3.  ### Error Logging
+    * The `useRouteError` hook was utilized in `<ErrorPage />` to log the caught error to the console, allowing developers to inspect the issue. In a production application, this hook would be used to report errors to a dedicated service like **Sentry**.
+
+This setup successfully replaces the generic browser error page with a helpful, context-aware custom error view.
 
 ---
 
-The next lesson will likely focus on proper error handling for invalid or non-existent URLs.
+The next section will likely focus on addressing issues related to search and linking when using nested routes.
 
-Would you like to move on to the next lesson on handling not-found pages?
+Would you like to continue with the next lesson on building relative links?
 
 
 # my-github Account : 
