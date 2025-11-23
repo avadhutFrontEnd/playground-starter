@@ -22,36 +22,56 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #4-Passing-Data-with-Route-Parameters_mp4_2min_02sec ] - Feature: Implement Dynamic Routes for User Details
+[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #5-Getting-Data-about-the-Current-Route_mp4_2min_57sec ] - Feature: Access Current Route Data using React Router Hooks
 
-## Implemented dynamic routing to pass data (User ID) through the URL using route parameters.
+## Implemented React Router hooks (`useParams`, `useSearchParams`, `useLocation`) to extract data and metadata about the current URL.
 
-This feature allows the application to map multiple distinct URLs (e.g., `/users/1`, `/users/2`) to a single component (`UserDetailPage`).
+This feature allows components to be fully dynamic, reading route parameters and query strings to render specific content.
 
 ---
 
-### Key Changes:
+### Key React Router Hooks
 
-1.  ### Defined Dynamic Route (`src/routing/routes.tsx`)
-    * A new route was added using a **route parameter**, indicated by a colon (`:`), to capture the User ID:
+1.  ### `useParams` (Access Route Parameters)
+    * **Purpose:** Extracts values from **dynamic segments** defined in the route path (e.g., `:id` in `/users/:id`).
+    * **Returns:** An object where keys are the parameter names (e.g., `id`).
+    * **Note:** All parameter values are returned as **strings** and must be parsed (e.g., to an integer) if needed for fetching or computation.
+    * **Implementation (`UserDetailPage.tsx`):**
         ```typescript
-        { path: "/users/:id", element: <UserDetailPage /> },
+        const params = useParams();
+        // console.log(params.id); // Output: '3'
         ```
-    * The parameter name is **`:id`**, which can now be extracted in the target component.
-    * *(Note: In React Router v6, the order of dynamic vs. static routes is no longer important for correct matching.)*
 
-2.  ### Created Dynamic Links (`src/routing/UserListPage.tsx`)
-    * In `UserListPage.tsx`, the `<Link />` component now generates dynamic URLs using a **template literal** (`backticks`) to embed the user's ID:
-        ```tsx
-        <Link to={`/users/${user.id}`}>{user.name}</Link>
+2.  ### `useSearchParams` (Access & Update Query Strings)
+    * **Purpose:** Accesses and provides a function to update the URL's **query string** (e.g., `?name=Alice&age=25`).
+    * **Returns:** An array containing:
+        1.  A `URLSearchParams` object (`searchParams`) for reading values (e.g., `searchParams.get("name")`).
+        2.  A function (`setSearchParams`) for updating the query string.
+    * **Usage Caution:** The `setSearchParams` function should only be called inside **event handlers** or **effects** to maintain component purity.
+    * **Implementation (`UserDetailPage.tsx`):**
+        ```typescript
+        const [searchParams, setSearchParams] = useSearchParams();
+        // console.log(searchParams.get("name")); // Output: 'Alice'
         ```
-    * Clicking these links directs the user to the `UserDetailPage` with the specific ID included in the URL.
+
+3.  ### `useLocation` (Access Current Location Metadata)
+    * **Purpose:** Provides an object containing detailed metadata about the current URL.
+    * **Returns:** A `location` object with properties like:
+        * **`pathname`**: The path part of the URL (e.g., `/users/3`).
+        * **`search`**: The raw query string (e.g., `?name=Alice&age=25`).
+    * **Implementation (`UserDetailPage.tsx`):**
+        ```typescript
+        const location = useLocation();
+        // console.log(location.pathname); 
+        ```
+
+These three hooks provide complete control over reading and interacting with the current URL state within any component.
 
 ---
 
-The next step is to retrieve this dynamic parameter value (`:id`) inside the `UserDetailPage` component to fetch and display the correct user information.
+The next step is to address the application's layout, ensuring common elements like the navigation bar and footer appear consistently across all new routes.
 
-Would you like to move on to the next lesson, which teaches you how to read these route parameters?
+Would you like to continue with the next lesson on creating a persistent layout?
 
 
 # my-github Account : 

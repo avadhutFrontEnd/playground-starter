@@ -1,4 +1,16 @@
+import { log } from "console";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
+
 const UserDetailPage = () => {
+  const params = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+
+  console.log(location);
+  // console.log(searchParams.toString());
+  // console.log(searchParams.get("name"));
+  // console.log(params);
+
   return <p>User</p>;
 };
 
