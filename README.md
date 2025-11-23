@@ -22,52 +22,36 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #3-Navigation_mp4_2min_43sec ] - Feature: Implement Client-Side Navigation
+[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #4-Passing-Data-with-Route-Parameters_mp4_2min_02sec ] - Feature: Implement Dynamic Routes for User Details
 
-## Implemented client-side navigation using React Router's `<Link />` component and the `useNavigate` hook.
+## Implemented dynamic routing to pass data (User ID) through the URL using route parameters.
 
-This update replaces the default browser behavior (full page reload for `<a>` tags) with faster, single-page application (SPA) style navigation.
+This feature allows the application to map multiple distinct URLs (e.g., `/users/1`, `/users/2`) to a single component (`UserDetailPage`).
 
 ---
 
-### Key Navigation Methods:
+### Key Changes:
 
-1.  ### Declarative Navigation (Links)
-    * **Problem with `<a>`:** Using a standard HTML `<a>` tag triggers a **full page reload**, which is slow and wastes bandwidth by re-downloading the entire page HTML.
-    * **Solution with `<Link />`:** The React Router **`<Link />`** component is used as a drop-in replacement for `<a>` tags.
-        * It prevents the full page reload.
-        * It only updates the necessary portion of the DOM, resulting in fast client-side navigation.
-    * **Implementation (`src/routing/HomePage.tsx`):**
-        ```tsx
-        import { Link } from "react-router-dom";
-        // ...
-        <Link to="/users">Users</Link>
+1.  ### Defined Dynamic Route (`src/routing/routes.tsx`)
+    * A new route was added using a **route parameter**, indicated by a colon (`:`), to capture the User ID:
+        ```typescript
+        { path: "/users/:id", element: <UserDetailPage /> },
         ```
+    * The parameter name is **`:id`**, which can now be extracted in the target component.
+    * *(Note: In React Router v6, the order of dynamic vs. static routes is no longer important for correct matching.)*
+
+2.  ### Created Dynamic Links (`src/routing/UserListPage.tsx`)
+    * In `UserListPage.tsx`, the `<Link />` component now generates dynamic URLs using a **template literal** (`backticks`) to embed the user's ID:
+        ```tsx
+        <Link to={`/users/${user.id}`}>{user.name}</Link>
+        ```
+    * Clicking these links directs the user to the `UserDetailPage` with the specific ID included in the URL.
 
 ---
 
-2.  ### Programmatic Navigation (Redirection)
-    * To redirect a user based on an application event (like form submission, login success, or button clicks), the **`useNavigate`** hook is used.
-    * **`useNavigate`** returns a function that can be called with the target path to trigger navigation.
-    * **Implementation (`src/routing/ContactPage.tsx`):**
-        * Added a new route: `{ path: "/contact", element: <ContactPage /> }`
-        * Used the hook to redirect upon form submission:
-            ```tsx
-            import { useNavigate } from "react-router-dom";
-            // ...
-            const navigate = useNavigate();
-            // ...
-            <form onSubmit={(event) => {
-              // ...
-              navigate("/"); // Redirects to the home page
-            }}>
-            ```
+The next step is to retrieve this dynamic parameter value (`:id`) inside the `UserDetailPage` component to fetch and display the correct user information.
 
----
-
-The application now supports modern, fast navigation between the defined routes.
-
-Would you like to continue with the next lesson on building a persistent layout for the routes?
+Would you like to move on to the next lesson, which teaches you how to read these route parameters?
 
 
 # my-github Account : 
