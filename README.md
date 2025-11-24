@@ -22,45 +22,43 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #9-Handling-Errors_mp4_3min_22sec ] - Feature: Implement Custom Error and Not-Found Pages
+[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #10-Private-Routes_mp4_2min_59sec ] - Feature: Implement Basic Private Route Mechanism
 
-## Implemented robust error handling for both application-thrown errors and invalid URLs using React Router's `errorElement`.
+## Implemented a basic "private route" mechanism to restrict access to the `/users` page to authenticated users.
 
-This centralizes error reporting and provides a better user experience than the default browser error page.
+This was achieved using React Router's declarative `<Navigate />` component to handle redirection during the render phase without causing side effects.
 
 ---
 
 ### Key Changes:
 
-1.  ### Defined Custom Error Component (`src/routing/ErrorPage.tsx`)
-    * Created the `<ErrorPage />` component to render a user-friendly error message.
-    * Used the **`useRouteError`** hook to access the error object thrown by the application or by the router (e.g., for 404 Not Found).
-    * Used the **`isRouteErrorResponse`** utility function to differentiate between:
-        * **Router Errors (404/Invalid Path):** If `isRouteErrorResponse(error)` is true, display **"Invalid page"**.
-        * **Application Errors:** Otherwise, display **"Unexpected error"**.
+1.  ### Implemented Authentication Check (`src/routing/UsersPage.tsx`)
+    * The custom **`useAuth`** hook was called to determine the current user's authentication status.
+    * If the user is **not logged in (`!user`)**, a redirection is immediately triggered.
 
-2.  ### Configured Global Error Boundary (`src/routing/routes.tsx`)
-    * The **`errorElement`** property was set on the **root route** (`path: "/"`) in the `createBrowserRouter` configuration:
+2.  ### Used Declarative Redirection
+    * The standard imperative `useNavigate()` hook cannot be called during rendering because it causes a side effect (updating the URL).
+    * Instead, the **`<Navigate />` component** (a declarative wrapper) was returned to perform the redirection:
         ```typescript
-        {
-          path: "/",
-          element: <Layout />,
-          errorElement: <ErrorPage />, // Catches all errors and 404s in child routes
-          children: [ /* ... */ ]
-        }
+        import { Navigate, Outlet } from "react-router-dom";
+        // ...
+        if (!user) return <Navigate to="/login" />;
         ```
-    * By setting the `errorElement` on the parent (root) route, it acts as an **error boundary** that catches errors thrown in any of its nested child routes, including when no child route matches the URL (404).
+    * The component instructs the router to change the location to `/login` *before* the component finishes rendering its protected content.
 
-3.  ### Error Logging
-    * The `useRouteError` hook was utilized in `<ErrorPage />` to log the caught error to the console, allowing developers to inspect the issue. In a production application, this hook would be used to report errors to a dedicated service like **Sentry**.
+3.  ### Defined Login Route (`src/routing/routes.tsx`)
+    * A new route for the login page was defined in the router configuration:
+        ```typescript
+        { path: "/login", element: <LoginPage /> },
+        ```
 
-This setup successfully replaces the generic browser error page with a helpful, context-aware custom error view.
+This method successfully protects the `UsersPage` by redirecting unauthenticated visitors to the login page. However, it was noted that this approach is not easily **scalable** for protecting multiple routes, which will be addressed in the next lesson.
 
 ---
 
-The next section will likely focus on addressing issues related to search and linking when using nested routes.
+The next lesson will introduce a more scalable approach to handling private routes using a dedicated wrapper component and nested routes.
 
-Would you like to continue with the next lesson on building relative links?
+Would you like to move on to the next lesson on scaling private routes?
 
 
 # my-github Account : 
