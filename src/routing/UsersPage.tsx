@@ -1,12 +1,8 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import UserList from "./UserList";
-import useAuth from "./hooks/useAuth";
-import { log } from "console";
 
 const UsersPage = () => {
-  const { user } = useAuth();
-  console.log(user);
-  if (!user) return <Navigate to="/login" />;
+
 
   return (
     <div className="row">

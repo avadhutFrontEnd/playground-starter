@@ -22,43 +22,63 @@ This repository belongs to part 2 of my React course covering intermediate-level
 You can find the course at https://codewithmosh.com
 
 # Commit message format : 
-[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #10-Private-Routes_mp4_2min_59sec ] - Feature: Implement Basic Private Route Mechanism
+[Course: 2. React 18 for Intermediate Topics > 4. Routing with React Router (2h) ] [ Video: #11-Layout-Routes_mp4_2min_08sec ] - Refactor: Create Scalable Private Routes using Layout Routes
 
-## Implemented a basic "private route" mechanism to restrict access to the `/users` page to authenticated users.
+## Refactored the Private Route logic into a central **Layout Route** for improved scalability and separation of concerns.
 
-This was achieved using React Router's declarative `<Navigate />` component to handle redirection during the render phase without causing side effects.
-
----
-
-### Key Changes:
-
-1.  ### Implemented Authentication Check (`src/routing/UsersPage.tsx`)
-    * The custom **`useAuth`** hook was called to determine the current user's authentication status.
-    * If the user is **not logged in (`!user`)**, a redirection is immediately triggered.
-
-2.  ### Used Declarative Redirection
-    * The standard imperative `useNavigate()` hook cannot be called during rendering because it causes a side effect (updating the URL).
-    * Instead, the **`<Navigate />` component** (a declarative wrapper) was returned to perform the redirection:
-        ```typescript
-        import { Navigate, Outlet } from "react-router-dom";
-        // ...
-        if (!user) return <Navigate to="/login" />;
-        ```
-    * The component instructs the router to change the location to `/login` *before* the component finishes rendering its protected content.
-
-3.  ### Defined Login Route (`src/routing/routes.tsx`)
-    * A new route for the login page was defined in the router configuration:
-        ```typescript
-        { path: "/login", element: <LoginPage /> },
-        ```
-
-This method successfully protects the `UsersPage` by redirecting unauthenticated visitors to the login page. However, it was noted that this approach is not easily **scalable** for protecting multiple routes, which will be addressed in the next lesson.
+This approach eliminates the need to duplicate authentication logic in every protected component.
 
 ---
 
-The next lesson will introduce a more scalable approach to handling private routes using a dedicated wrapper component and nested routes.
+### Key Concept: Layout Routes
 
-Would you like to move on to the next lesson on scaling private routes?
+A **Layout Route** is a route object in the configuration that is used **solely for grouping other routes** to enforce common **layouts** or **business rules** (like authentication checks).
+
+* Layout Routes typically **do not have a `path`** property.
+* They use the `element` property to render a wrapper component.
+* The actual routes to be grouped are placed in the `children` array.
+
+### Implementation Steps
+
+1.  ### Created `<PrivateRoutes />` Component (`src/routing/PrivateRoutes.tsx`)
+    * This component now holds the entire authentication check and redirection logic, which was extracted from `UsersPage.tsx`.
+    * If the user is unauthenticated, it returns the `<Navigate />` component.
+    * If the user is authenticated, it returns the **`<Outlet />`**, which is where the protected child route will be rendered.
+        ```typescript
+        const PrivateRoutes = () => {
+          const { user } = useAuth();
+          if (!user) return <Navigate to="/login" />;
+          return <Outlet />;
+        };
+        ```
+
+2.  ### Configured Layout Route (`src/routing/routes.tsx`)
+    * A new top-level route object was created **without a `path`**:
+        ```typescript
+        {
+          element: <PrivateRoutes />,
+          children: [
+            // Any route inside here is now protected
+            {
+              path: "users",
+              element: <UsersPage />,
+              children: [{ path: ":id", element: <UserDetail /> }],
+            },
+          ],
+        },
+        ```
+    * The `users` route was moved inside the `children` array of this new private layout route. Now, any route added to this `children` array is automatically protected by the `<PrivateRoutes />` component.
+
+3.  ### Cleaned Up Protected Component (`src/routing/UsersPage.tsx`)
+    * The component was simplified by removing the `useAuth` hook and the conditional `<Navigate />` statement. It now focuses only on rendering its content.
+
+This refactoring successfully centralizes the protection logic, making it easy to add or remove private routes in the future.
+
+---
+
+The final lesson in this section will cover creating relative links to make nested routes more robust against path changes.
+
+Would you like to continue with the next lesson on building relative links?
 
 
 # my-github Account : 
